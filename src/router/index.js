@@ -73,6 +73,40 @@ export const constantRoutes = [
         name: 'Tree',
         component: () => import('@/views/tree/index'),
         meta: { title: 'Tree', icon: 'tree' }
+      },
+      {
+        path: 'ops',
+        name: 'Ops',
+        component: () => import('@/views/ops/index'),
+        meta: { title: 'Ops', icon: 'tree' }
+      }
+    ]
+  },
+
+  {
+    path: '/ops',
+    component: Layout,
+    redirect: '/ops/location',
+    name: '运维工时统计',
+    meta: { title: '运维工时统计', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'location',
+        name: '电站位置',
+        component: () => import('@/views/ops/location/index'),
+        meta: { title: '电站位置', icon: 'table' }
+      },
+      {
+        path: 'record',
+        name: '考勤记录',
+        component: () => import('@/views/ops/record/index'),
+        meta: { title: '考勤记录', icon: 'tree' }
+      },
+      {
+        path: 'statistics',
+        name: '工时统计',
+        component: () => import('@/views/ops/statistics/index'),
+        meta: { title: '工时统计', icon: 'tree' }
       }
     ]
   },

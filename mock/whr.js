@@ -18,7 +18,7 @@ const data = Mock.mock({
 
 module.exports = [
   {
-    url: '/ops/psa/locations',
+    url: '/mock/ops/psa/locations',
     type: 'get',
     response: config => {
       const items = data.items

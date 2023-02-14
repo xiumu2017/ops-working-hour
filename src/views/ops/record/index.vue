@@ -3,10 +3,6 @@
     <!-- 查询区域 -->
     <div class="filter-container">
       <el-input v-model="pageQuery.realName" placeholder="请输入姓名" style="width: 200px;" class="filter-item" />
-      <el-select v-model="pageQuery.enable" class="filter-item" placeholder="启用/禁用" clearable>
-        <el-option key="1" :value="1" label="启用" />
-        <el-option key="0" :value="0" label="禁用" />
-      </el-select>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" size="mini" icon="el-icon-search"
         @click="fetchData">查询</el-button>
 

@@ -4,14 +4,35 @@
     <!-- 查询区域 -->
     <div class="filter-container">
       <el-input v-model="pageQuery.realName" placeholder="请输入姓名" style="width: 200px;" class="filter-item" />
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" size="mini" icon="el-icon-search"
-        @click="fetchData">查询</el-button>
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px;"
+        type="primary"
+        size="mini"
+        icon="el-icon-search"
+        @click="fetchData"
+      >查询
+      </el-button>
 
-      <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-refresh"
-        @click="reset">重置</el-button>
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px;"
+        size="mini"
+        type="primary"
+        icon="el-icon-refresh"
+        @click="reset"
+      >重置
+      </el-button>
 
-      <el-button class="filter-item" style="margin-left: 10px;" size="mini" type="primary" icon="el-icon-upload"
-        @click="statisticsDialogVisiable = true">打开统计</el-button>
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px;"
+        size="mini"
+        type="primary"
+        icon="el-icon-upload"
+        @click="statisticsDialogVisiable = true"
+      >打开统计
+      </el-button>
 
       <el-dialog :visible.sync="statisticsDialogVisiable" width="40%">
         <el-select v-model="workNo" filterable placeholder="请选择" @change="statisticsByUser">
@@ -23,33 +44,39 @@
           </el-option>
         </el-select>
 
-        <el-table v-loading="statisticsListLoading" :data="statisticsList" element-loading-text="Loading" border fit
-          highlight-current-row>
+        <el-table
+          v-loading="statisticsListLoading"
+          :data="statisticsList"
+          element-loading-text="Loading"
+          border
+          fit
+          highlight-current-row
+        >
           <el-table-column align="center" label="ID" width="95">
             <template slot-scope="scope">
               {{ scope.$index + 1 }}
             </template>
           </el-table-column>
 
-          <el-table-column label="电站ID" width="110" align="center" v-if="flag">
+          <el-table-column v-if="flag" label="电站ID" width="110" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.psaId ? scope.row.psaId : '--' }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column label="电站名称" v-if="flag">
+          <el-table-column v-if="flag" label="电站名称">
             <template slot-scope="scope">
               {{ scope.row.psaName ? scope.row.psaName : '非电站' }}
             </template>
           </el-table-column>
 
-          <el-table-column label="工号" width="110" align="center" v-if="!flag">
+          <el-table-column v-if="!flag" label="工号" width="110" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.workNo }}</span>
             </template>
           </el-table-column>
 
-          <el-table-column label="姓名" v-if="!flag">
+          <el-table-column v-if="!flag" label="姓名">
             <template slot-scope="scope">
               {{ scope.row.realName }}
             </template>
@@ -146,8 +173,13 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination background layout="prev, pager, next" :total="total" :page-size="pageQuery.pageSize"
-      :current-page.sync="pageQuery.pageNum" @current-change="fetchData" />
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="total"
+      :page-size="pageQuery.pageSize"
+      :current-page.sync="pageQuery.pageNum"
+      @current-change="fetchData" />
   </div>
 </template>
 
@@ -213,7 +245,7 @@ export default {
     },
     statisticsByUser(val) {
       this.statisticsListLoading = true
-      getUserStatistics({ "workNo": val }).then(res => {
+      getUserStatistics({ 'workNo': val }).then(res => {
         console.log(res)
         this.flag = true
         this.psaId = null
@@ -223,7 +255,7 @@ export default {
     },
     statisticsByPsa(val) {
       this.statisticsListLoading = true
-      getPsaStatistics({ "psaId": val }).then(res => {
+      getPsaStatistics({ 'psaId': val }).then(res => {
         console.log(res)
         this.flag = false
         this.workNo = null

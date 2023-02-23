@@ -65,10 +65,6 @@
           </div>
         </el-upload>
       </el-dialog>
-
-      <el-dialog :visible.sync="timeLineDialogVisible" width="40%">
-        <time-line />
-      </el-dialog>
     </div>
     <el-table
       v-loading="listLoading"
@@ -119,46 +115,6 @@
           {{ scope.row.attendanceDate }}
         </template>
       </el-table-column>
-
-      <el-table-column label="考勤时间" width="140" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.attendanceTime }}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="打卡时间" width="140" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.clockInTime }}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="打卡结果" width="110" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.clockInResult }}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="打卡地址" width="300" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.clockInAddress }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="打卡备注" width="100" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.clockInRemark }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="异常打卡原因" width="100" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.exClockInReason }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="打卡设备" width="180" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.clockInDevice }}</span>
-        </template>
-      </el-table-column>
     </el-table>
     <el-pagination
       background
@@ -173,10 +129,8 @@
 
 <script>
 import { getList } from '@/api/ops/record'
-import TimeLine from '@/views/ops/record/time-line.vue'
 
 export default {
-  components: { TimeLine },
   filters: {
     statusFilter(status) {
       const statusMap = {

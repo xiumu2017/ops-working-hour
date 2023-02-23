@@ -34,25 +34,27 @@ export const constantRoutes = [
   {
     path: '/login',
     component: () => import('@/views/login/index'),
-    hidden: true
+    hidden: true,
   },
 
   {
     path: '/404',
     component: () => import('@/views/404'),
-    hidden: true
+    hidden: true,
   },
 
   {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
-    }]
+    children: [
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/index'),
+        meta: { title: 'Dashboard', icon: 'dashboard' },
+      },
+    ],
   },
 
   {
@@ -66,31 +68,38 @@ export const constantRoutes = [
         path: 'location',
         name: '电站位置',
         component: () => import('@/views/ops/location/index'),
-        meta: { title: '电站位置', icon: 'table' }
+        meta: { title: '电站位置', icon: 'table' },
       },
       {
         path: 'record',
         name: '考勤记录',
         component: () => import('@/views/ops/record/index'),
-        meta: { title: '考勤记录', icon: 'tree' }
+        meta: { title: '考勤记录', icon: 'tree' },
+      },
+      {
+        path: 'schedule',
+        name: '排班表',
+        component: () => import('@/views/ops/schedule/index'),
+        meta: { title: '排班表', icon: 'tree' },
       },
       {
         path: 'statistics',
         name: '工时统计',
         component: () => import('@/views/ops/statistics/index'),
-        meta: { title: '工时统计', icon: 'tree' }
-      }
-    ]
+        meta: { title: '工时统计', icon: 'tree' },
+      },
+    ],
   },
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/404', hidden: true },
 ]
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
-})
+const createRouter = () =>
+  new Router({
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRoutes,
+  })
 
 const router = createRouter()
 

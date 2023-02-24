@@ -86,7 +86,7 @@
             width="110"
             align="center"
           >
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <span>{{ scope.row.psaId ? scope.row.psaId : '--' }}</span>
             </template>
           </el-table-column>

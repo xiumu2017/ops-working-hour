@@ -88,6 +88,12 @@ export const constantRoutes = [
         component: () => import('@/views/ops/statistics/index'),
         meta: { title: '工时统计', icon: 'tree' },
       },
+      {
+        path: 'simulator',
+        name: '工时模拟器',
+        component: () => import('@/views/ops/statistics/simulator'),
+        meta: { title: '工时模拟器', icon: 'tree' },
+      },
     ],
   },
   // 404 page must be placed at the end !!!

@@ -4,7 +4,7 @@ export function getList(params) {
   return request({
     url: '/ops/working-hours/records',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -12,7 +12,7 @@ export function getUsers(params) {
   return request({
     url: '/ops/working-hours/users',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -20,7 +20,7 @@ export function getPsaList(params) {
   return request({
     url: '/ops/working-hours/psa',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -28,7 +28,7 @@ export function getPsaStatistics(params) {
   return request({
     url: '/ops/working-hours/statistics/psa',
     method: 'get',
-    params
+    params,
   })
 }
 
@@ -36,6 +36,6 @@ export function getUserStatistics(params) {
   return request({
     url: '/ops/working-hours/statistics/users',
     method: 'get',
-    params
+    params,
   })
 }

@@ -4,6 +4,6 @@ export function getList(params) {
   return request({
     url: '/ops/psa/locations',
     method: 'get',
-    params
+    params,
   })
 }

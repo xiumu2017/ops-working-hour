@@ -36,7 +36,7 @@
           <el-button @click="overTimeRecordAddDialogVisible = true">
             修改加班记录
           </el-button>
-          <el-button @click="overTimeRecordAddDialogVisible = true">
+          <el-button @click="notWorkingRecordAddDialogVisible = true">
             添加请假记录
           </el-button>
         </div>
@@ -113,7 +113,7 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="打卡时间">
+          <el-form-item label="打卡时间（HH:mm）">
             <el-input v-model="clockInTime" />
           </el-form-item>
         </el-form>
@@ -124,15 +124,30 @@
         title="加班记录"
       >
         <el-form>
-          <el-form-item label="加班开始时间">
+          <el-form-item label="加班开始时间（HH:mm）">
             <el-input v-model="overTimeStartTime" />
           </el-form-item>
-          <el-form-item label="加班结束时间">
+          <el-form-item label="加班结束时间（HH:mm）">
             <el-input v-model="overTimeEndTime" />
           </el-form-item>
         </el-form>
         <el-button @click="addOverTimeRecord">确定</el-button>
         <el-button @click="removeOverTimeRecord">清除</el-button>
+      </el-dialog>
+      <el-dialog
+        :visible.sync="notWorkingRecordAddDialogVisible"
+        title="请假记录"
+      >
+        <el-form>
+          <el-form-item label="请假开始时间（HH:mm）">
+            <el-input v-model="notWorkStartTime" />
+          </el-form-item>
+          <el-form-item label="请假结束时间（HH:mm）">
+            <el-input v-model="notWorkEndTime" />
+          </el-form-item>
+        </el-form>
+        <el-button @click="addNotWorkingRecord">确定</el-button>
+        <el-button @click="removeNotWorkingRecord">清除</el-button>
       </el-dialog>
     </div>
   </div>
@@ -152,9 +167,12 @@ export default {
       clockInTime: '',
       overTimeStartTime: '19:00',
       overTimeEndTime: '22:00',
+      notWorkStartTime: '',
+      notWorkEndTime: '',
       hasOverTimeRecord: true,
       attendanceRecordAddDialogVisible: false,
       overTimeRecordAddDialogVisible: false,
+      notWorkingRecordAddDialogVisible: false,
       psaList: [
         { psaId: '3100', psaName: 'A' },
         { psaId: '4100', psaName: 'B' },
@@ -231,7 +249,7 @@ export default {
       const arr = this.activities
         .concat(this.overTimeActivities)
         .concat(this.notWorkActivities)
-      console.log(arr)
+      console.log('computed')
       return arr.sort((a, b) => {
         const t1 = a.timestamp
         const t2 = b.timestamp
@@ -292,6 +310,12 @@ export default {
         this.formData.record.endTime =
           this.currentDate + ' ' + this.overTimeEndTime
       }
+      if (this.notWorkStartTime && this.notWorkEndTime) {
+        this.formData.notWorkingRecords[0] = {
+          startTime: this.currentDate + ' ' + this.notWorkStartTime,
+          endTime: this.currentDate + ' ' + this.notWorkEndTime,
+        }
+      }
     },
     addAttendanceRecord() {
       this.activities.push({
@@ -345,6 +369,33 @@ export default {
     refresh() {
       this.fetchTimeLine()
       this.fetchTableData()
+    },
+    addNotWorkingRecord() {
+      this.notWorkActivities = []
+      this.notWorkActivities.push({
+        content: '请假开始',
+        timestamp: this.notWorkStartTime,
+        icon: 'el-icon-bottom',
+        type: 'primary',
+        size: 'large',
+      })
+      this.notWorkActivities.push({
+        content: '请假结束',
+        timestamp: this.notWorkEndTime,
+        icon: 'el-icon-top',
+        type: 'primary',
+        size: 'large',
+      })
+      this.refresh()
+      this.notWorkingRecordAddDialogVisible = false
+    },
+    removeNotWorkingRecord() {
+      this.notWorkActivities = []
+      this.notWorkStartTime = ''
+      this.notWorkEndTime = ''
+      this.formData.notWorkingRecords = []
+      this.refresh()
+      this.notWorkingRecordAddDialogVisible = false
     },
   },
 }

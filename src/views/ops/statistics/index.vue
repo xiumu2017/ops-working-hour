@@ -34,11 +34,11 @@
         size="mini"
         type="primary"
         icon="el-icon-upload"
-        @click="statisticsDialogVisiable = true"
+        @click="statisticsDialogVisible = true"
         >打开统计
       </el-button>
 
-      <el-dialog :visible.sync="statisticsDialogVisiable" width="40%">
+      <el-dialog :visible.sync="statisticsDialogVisible" width="40%">
         <el-select
           v-model="workNo"
           filterable
@@ -260,7 +260,7 @@ export default {
       psaList: [],
       workNo: '',
       psaId: '',
-      statisticsDialogVisiable: false,
+      statisticsDialogVisible: false,
       flag: true,
     }
   },

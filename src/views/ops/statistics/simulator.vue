@@ -2,15 +2,11 @@
   <div>
     <el-row type="flex" class="row-bg">
       <div>
-        <el-radio-group v-model="formData.scheduled">
+        <el-radio-group v-model="formData.scheduled" @change="refresh">
           <el-radio-button :label="true">排班</el-radio-button>
           <el-radio-button :label="false">未排班</el-radio-button>
         </el-radio-group>
-        <el-button @click="overTimeRecordAddDialogVisible = true">
-          加班记录
-        </el-button>
-        <el-button> 请假</el-button>
-        <el-button @click="fetchTableData"> 工时计算</el-button>
+        <el-button @click="refresh">刷新</el-button>
       </div>
     </el-row>
 
@@ -37,6 +33,12 @@
           <el-button @click="attendanceRecordAddDialogVisible = true">
             添加打卡记录
           </el-button>
+          <el-button @click="overTimeRecordAddDialogVisible = true">
+            修改加班记录
+          </el-button>
+          <el-button @click="overTimeRecordAddDialogVisible = true">
+            添加请假记录
+          </el-button>
         </div>
       </el-col>
       <el-col :span="6">
@@ -61,6 +63,9 @@
         </div>
       </el-col>
       <el-col :span="12">
+        <div class="sim-title">
+          <span>工时统计表</span>
+        </div>
         <div class="grid-content bg-purple-light">
           <el-table border fit highlight-current-row :data="records">
             <el-table-column label="电站名称">
@@ -127,6 +132,7 @@
           </el-form-item>
         </el-form>
         <el-button @click="addOverTimeRecord">确定</el-button>
+        <el-button @click="removeOverTimeRecord">清除</el-button>
       </el-dialog>
     </div>
   </div>
@@ -139,12 +145,14 @@ export default {
   name: 'Simulator',
   data() {
     return {
+      currentDate: '2023-02-27',
       records: [],
       selectedPsa: '3100',
       selectedPsaName: 'A',
       clockInTime: '',
       overTimeStartTime: '19:00',
       overTimeEndTime: '22:00',
+      hasOverTimeRecord: true,
       attendanceRecordAddDialogVisible: false,
       overTimeRecordAddDialogVisible: false,
       psaList: [
@@ -192,7 +200,22 @@ export default {
           size: 'large',
         },
       ],
-      overTimeActivities: [],
+      overTimeActivities: [
+        {
+          content: '加班开始',
+          timestamp: '19:00',
+          icon: 'el-icon-moon',
+          type: 'danger',
+          size: 'large',
+        },
+        {
+          content: '加班结束',
+          timestamp: '22:00',
+          icon: 'el-icon-moon',
+          type: 'danger',
+          size: 'large',
+        },
+      ],
       notWorkActivities: [],
       hyperActivities: [],
       formData: {
@@ -208,6 +231,7 @@ export default {
       const arr = this.activities
         .concat(this.overTimeActivities)
         .concat(this.notWorkActivities)
+      console.log(arr)
       return arr.sort((a, b) => {
         const t1 = a.timestamp
         const t2 = b.timestamp
@@ -225,6 +249,19 @@ export default {
         }
       })
     },
+  },
+  created() {
+    const today = new Date()
+    const day = today.getMonth() + 1
+    this.currentDate =
+      today.getFullYear() +
+      '-' +
+      (day < 10 ? '0' + day : day) +
+      '-' +
+      today.getDate()
+
+    console.log(this.currentDate)
+    this.refresh()
   },
   methods: {
     fetchTimeLine() {
@@ -244,13 +281,17 @@ export default {
       this.formData.attendanceRecords = []
       this.activities.forEach((item) => {
         this.formData.attendanceRecords.push({
-          ciTime: '2023-02-24 ' + item.timestamp,
+          ciTime: this.currentDate + ' ' + item.timestamp,
           psaName: item.psaName,
           psaId: item.psaId,
         })
       })
-      this.formData.record.startTime = '2023-02-24 ' + this.overTimeStartTime
-      this.formData.record.endTime = '2023-02-24 ' + this.overTimeEndTime
+      if (this.hasOverTimeRecord) {
+        this.formData.record.startTime =
+          this.currentDate + ' ' + this.overTimeStartTime
+        this.formData.record.endTime =
+          this.currentDate + ' ' + this.overTimeEndTime
+      }
     },
     addAttendanceRecord() {
       this.activities.push({
@@ -274,6 +315,7 @@ export default {
       })
     },
     addOverTimeRecord() {
+      this.overTimeActivities = []
       this.overTimeActivities.push({
         content: '加班开始',
         timestamp: this.overTimeStartTime,
@@ -288,8 +330,21 @@ export default {
         type: 'danger',
         size: 'large',
       })
-      this.fetchTimeLine()
+      this.refresh()
       this.overTimeRecordAddDialogVisible = false
+    },
+    removeOverTimeRecord() {
+      this.overTimeActivities = []
+      this.hasOverTimeRecord = false
+      this.overTimeStartTime = ''
+      this.overTimeEndTime = ''
+      this.formData.record = null
+      this.refresh()
+      this.overTimeRecordAddDialogVisible = false
+    },
+    refresh() {
+      this.fetchTimeLine()
+      this.fetchTableData()
     },
   },
 }

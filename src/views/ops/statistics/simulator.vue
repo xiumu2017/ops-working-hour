@@ -270,13 +270,14 @@ export default {
   },
   created() {
     const today = new Date()
-    const day = today.getMonth() + 1
+    const month = today.getMonth() + 1
+    const date = today.getDate()
     this.currentDate =
       today.getFullYear() +
       '-' +
-      (day < 10 ? '0' + day : day) +
+      (month < 10 ? '0' + month : month) +
       '-' +
-      today.getDate()
+      (date < 10 ? '0' + date : date)
 
     console.log(this.currentDate)
     this.refresh()

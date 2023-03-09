@@ -109,9 +109,13 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="工时（分钟）" width="200" align="center">
+          <el-table-column label="工时" width="200" align="center">
             <template slot-scope="scope">
-              {{ scope.row.duration }}
+              {{
+                (scope.row.duration / 60).toFixed(1) +
+                'h / ' +
+                scope.row.duration
+              }}
             </template>
           </el-table-column>
           <el-table-column
@@ -184,12 +188,25 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="工时（分钟）" width="110" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.durationMinute }}
+      <el-table-column label="工时" width="110" align="center">
+        <template v-slot="scope">
+          {{
+            (scope.row.durationMinute / 60).toFixed(1) +
+            'h / ' +
+            scope.row.durationMinute
+          }}
         </template>
       </el-table-column>
-
+      <el-table-column label="工时类型">
+        <template v-slot="scope">
+          {{ scope.row.category === 'NORMAL' ? '电站运维' : '运营' }}
+        </template>
+      </el-table-column>
+      <el-table-column label="是否加班">
+        <template v-slot="scope">
+          {{ scope.row.overTimeFlag ? '加班' : '/' }}
+        </template>
+      </el-table-column>
       <el-table-column label="运维组" width="500" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.opsDepName }}</span>
@@ -254,6 +271,7 @@ export default {
       pageQuery: {
         pageNum: 1,
         pageSize: 10,
+        opsVersion: 2,
       },
       total: 0,
       users: [],
@@ -289,6 +307,7 @@ export default {
       this.pageQuery = {
         pageNum: 1,
         pageSize: 10,
+        opsVersion: 2,
       }
     },
     statisticsByUser(val) {

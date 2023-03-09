@@ -83,14 +83,19 @@
                 {{ scope.row.completeTime }}
               </template>
             </el-table-column>
-            <el-table-column label="工时">
+            <el-table-column label="工时(h)">
               <template v-slot="scope">
-                {{ scope.row.durationMinute }}
+                {{ (scope.row.durationMinute / 60).toFixed(2) }}
               </template>
             </el-table-column>
             <el-table-column label="工时类型">
               <template v-slot="scope">
-                {{ scope.row.category }}
+                {{ scope.row.category === 'NORMAL' ? '电站运维' : '运营' }}
+              </template>
+            </el-table-column>
+            <el-table-column label="是否加班">
+              <template v-slot="scope">
+                {{ scope.row.overTimeFlag ? '加班' : '/' }}
               </template>
             </el-table-column>
           </el-table>
@@ -174,44 +179,64 @@ export default {
       overTimeRecordAddDialogVisible: false,
       notWorkingRecordAddDialogVisible: false,
       psaList: [
-        { psaId: '3100', psaName: 'A' },
-        { psaId: '4100', psaName: 'B' },
-        { psaId: '5100', psaName: 'C' },
-        { psaId: '6100', psaName: 'D' },
-        { psaId: '7100', psaName: 'E' },
+        { psaId: '0', psaName: '非电站-外勤' },
+        { psaId: '1', psaName: '办公地-Office' },
+        { psaId: '3100', psaName: 'A电站' },
+        { psaId: '4100', psaName: 'B电站' },
+        { psaId: '5100', psaName: 'C电站' },
+        { psaId: '6100', psaName: 'D电站' },
+        { psaId: '7100', psaName: 'E电站' },
       ],
       activities: [
         {
-          content: 'A 电站打卡',
+          content: 'A电站',
           psaId: '3100',
-          psaName: 'A',
+          psaName: 'A电站',
           timestamp: '07:33',
           icon: 'el-icon-position',
           type: 'success',
           size: 'large',
         },
         {
-          content: 'B 电站打卡',
+          content: 'B电站',
           psaId: '4100',
-          psaName: 'B',
+          psaName: 'B电站',
           timestamp: '11:33',
           icon: 'el-icon-position',
           type: 'success',
           size: 'large',
         },
         {
-          content: 'C 电站打卡',
+          content: '办公地-Office',
+          psaId: '1',
+          psaName: '办公地-Office',
+          timestamp: '14:20',
+          icon: 'el-icon-position',
+          type: 'success',
+          size: 'large',
+        },
+        {
+          content: 'C电站',
           psaId: '5100',
-          psaName: 'C',
+          psaName: 'C电站',
           timestamp: '15:33',
           icon: 'el-icon-position',
           type: 'success',
           size: 'large',
         },
         {
-          content: 'C 电站打卡',
+          content: '非电站-外勤',
+          psaId: '0',
+          psaName: '非电站-外勤',
+          timestamp: '17:05',
+          icon: 'el-icon-position',
+          type: 'success',
+          size: 'large',
+        },
+        {
+          content: 'C电站',
           psaId: '5100',
-          psaName: 'C',
+          psaName: 'C电站',
           timestamp: '18:33',
           icon: 'el-icon-position',
           type: 'success',
